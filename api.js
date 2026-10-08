@@ -43,6 +43,8 @@ function renderNote(note) {
     deleteBtn.textContent = 'Delete';
     deleteBtn.type = 'button';
     deleteBtn.className = 'delete-btn';
+    // Attach delete functionality
+    deleteBtn.addEventListener('click', () => deleteNote(note.id, li));
 
     li.appendChild(h3);
     li.appendChild(p);
@@ -74,13 +76,11 @@ async function loadNotes() {
     }
 }
 
-// POST: Create note
 async function createNote(e) {
     e.preventDefault();
     const title = titleInput.value.trim();
     const body = bodyInput.value.trim();
 
-    // Validation: title required, max 100 characters
     if (!title) {
         showStatus('Title is required.', 'error');
         return;
@@ -101,7 +101,6 @@ async function createNote(e) {
         });
         
         const noteElement = renderNote(newNote);
-        
         const emptyState = notesList.querySelector('.empty-state');
         if (emptyState) emptyState.remove();
 
@@ -117,6 +116,33 @@ async function createNote(e) {
         showStatus('Failed to create note. Please try again.', 'error');
     } finally {
         submitBtn.disabled = false;
+    }
+}
+
+// DELETE: Remove note
+async function deleteNote(id, element) {
+    showStatus(`Deleting note ${id}...`, 'loading');
+    
+    try {
+        /* 
+         * Note: JSONPlaceholder does not actually persist data. 
+         * DELETE requests will return a 200 OK, but the data isn't truly removed from their DB.
+         * We handle this sensibly by optimistically removing the UI element upon a successful 
+         * HTTP response, simulating the expected behavior for the frontend.
+         */
+        await request(`${API_URL}/${id}`, { method: 'DELETE' });
+        
+        element.remove();
+        showStatus(`Note ${id} deleted successfully.`, 'success');
+        
+        if (notesList.children.length === 0) {
+            const emptyLi = document.createElement('li');
+            emptyLi.className = 'empty-state';
+            emptyLi.textContent = 'No notes found.';
+            notesList.appendChild(emptyLi);
+        }
+    } catch (error) {
+        showStatus(`Failed to delete note ${id}.`, 'error');
     }
 }
 
