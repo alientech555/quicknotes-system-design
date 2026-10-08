@@ -1,6 +1,5 @@
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-// Reusable async function for fetch requests
 async function request(url, options = {}) {
     const response = await fetch(url, options);
     if (!response.ok) {
@@ -10,8 +9,11 @@ async function request(url, options = {}) {
     return text ? JSON.parse(text) : {};
 }
 
-// DOM Elements
 const loadBtn = document.querySelector('#load-btn');
+const noteForm = document.querySelector('#note-form');
+const submitBtn = document.querySelector('#submit-btn');
+const titleInput = document.querySelector('#title-input');
+const bodyInput = document.querySelector('#body-input');
 const statusEl = document.querySelector('#status');
 const notesList = document.querySelector('#notes-list');
 
@@ -41,7 +43,6 @@ function renderNote(note) {
     deleteBtn.textContent = 'Delete';
     deleteBtn.type = 'button';
     deleteBtn.className = 'delete-btn';
-    // Event listener will be attached in Task 3
 
     li.appendChild(h3);
     li.appendChild(p);
@@ -49,7 +50,6 @@ function renderNote(note) {
     return li;
 }
 
-// GET: Load 10 notes
 async function loadNotes() {
     loadBtn.disabled = true;
     showStatus('Loading notes...', 'loading');
@@ -57,7 +57,6 @@ async function loadNotes() {
 
     try {
         const notes = await request(`${API_URL}?_limit=10`);
-        
         if (notes.length === 0) {
             const emptyLi = document.createElement('li');
             emptyLi.className = 'empty-state';
@@ -75,4 +74,51 @@ async function loadNotes() {
     }
 }
 
+// POST: Create note
+async function createNote(e) {
+    e.preventDefault();
+    const title = titleInput.value.trim();
+    const body = bodyInput.value.trim();
+
+    // Validation: title required, max 100 characters
+    if (!title) {
+        showStatus('Title is required.', 'error');
+        return;
+    }
+    if (title.length > 100) {
+        showStatus('Title must be 100 characters or fewer.', 'error');
+        return;
+    }
+
+    submitBtn.disabled = true;
+    showStatus('Creating note...', 'loading');
+
+    try {
+        const newNote = await request(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, body, userId: 1 })
+        });
+        
+        const noteElement = renderNote(newNote);
+        
+        const emptyState = notesList.querySelector('.empty-state');
+        if (emptyState) emptyState.remove();
+
+        if (notesList.firstChild) {
+            notesList.insertBefore(noteElement, notesList.firstChild);
+        } else {
+            notesList.appendChild(noteElement);
+        }
+
+        showStatus(`Note created (status 201, id ${newNote.id}).`, 'success');
+        noteForm.reset();
+    } catch (error) {
+        showStatus('Failed to create note. Please try again.', 'error');
+    } finally {
+        submitBtn.disabled = false;
+    }
+}
+
 loadBtn.addEventListener('click', loadNotes);
+noteForm.addEventListener('submit', createNote);
