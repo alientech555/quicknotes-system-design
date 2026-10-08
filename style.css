@@ -1,0 +1,141 @@
+/* Box-sizing reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #2c3e50;
+    color: #ffffff;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+header h1 { margin: 0; }
+header p { margin: 0.5rem 0 0; opacity: 0.8; }
+
+main {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+section {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+form > div {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+input, textarea {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+button {
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: #ffffff;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Distinct styles for success, error, and loading status messages */
+#status {
+    font-weight: 600;
+    min-height: 1.2em;
+    margin: 0;
+}
+
+#status.success { 
+    color: #27ae60; 
+}
+
+#status.error { 
+    color: #e74c3c; 
+}
+
+#status.loading {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Note card styling */
+#notes-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.note-card {
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    background: #fcfcfc;
+}
+
+.note-card h3 { margin: 0 0 0.5rem 0; font-size: 1.1rem; }
+.note-card p { margin: 0 0 0.5rem 0; white-space: pre-wrap; }
+
+.empty-state {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 2rem;
+    font-style: italic;
+    list-style-type: none;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: #2c3e50;
+    color: #ffffff;
+    margin-top: 2rem;
+}

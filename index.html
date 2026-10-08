@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickNotes System Design</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>QuickNotes</h1>
+        <p>System Design API Client</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Load Notes</h2>
+            <button type="button" id="load-btn">Load notes</button>
+        </section>
+
+        <section>
+            <h2>Create Note</h2>
+            <form id="note-form">
+                <div>
+                    <label for="title-input">Title:</label>
+                    <input type="text" id="title-input" maxlength="100" required>
+                </div>
+                <div>
+                    <label for="body-input">Body (optional):</label>
+                    <textarea id="body-input"></textarea>
+                </div>
+                <button type="submit" id="submit-btn">Create Note</button>
+            </form>
+        </section>
+
+        <section>
+            <p id="status"></p>
+        </section>
+
+        <section>
+            <h2>Your Notes</h2>
+            <ul id="notes-list"></ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 QuickNotes</p>
+    </footer>
+
+    <script src="api.js" defer></script>
+</body>
+</html>
